@@ -1,40 +1,68 @@
 "use client";
 
 import * as React from "react";
-import { Moon, Sun } from "lucide-react";
+import { LaptopMinimal, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-
-import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+
+const THEME_OPTIONS = [
+  { value: "dark", icon: Moon, label: "Toggle dark theme" },
+  { value: "light", icon: Sun, label: "Toggle light theme" },
+  { value: "system", icon: LaptopMinimal, label: "Toggle system theme" },
+];
 
 export function ThemeToggle() {
-  const { setTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null; // Avoid rendering on the server
+  }
+
+  const ThemeButton = ({
+    value,
+    Icon,
+    label,
+  }: {
+    value: string;
+    Icon: React.ComponentType<{ className: string }>;
+    label: string;
+  }) => (
+    <Button
+      variant={theme === value ? "default" : "ghost"}
+      aria-label={label}
+      disabled={theme === value}
+      className="rounded-full disabled:opacity-100"
+      onClick={() => setTheme(value)}
+    >
+      <Icon className="h-4 w-4" />
+    </Button>
+  );
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="bg-accent border-primary flex items-center rounded-full border">
+      {THEME_OPTIONS.map(({ value, icon: Icon, label }) => (
+        <TooltipProvider key={value}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <ThemeButton value={value} Icon={Icon} label={label} />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{label}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      ))}
+    </div>
   );
 }

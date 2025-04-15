@@ -1,39 +1,50 @@
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Brain } from "lucide-react";
 import Link from "next/link";
+import {
+  LandingButtons,
+  SignInWithGoogleButton,
+} from "@/components/landing/landing-buttons";
+import { auth } from "@/server/auth";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const session = await auth();
+  const isAuthenticated = !!session?.user;
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-        <ThemeToggle />
-        <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-          Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-        </h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/usage/first-steps"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">First Steps →</h3>
-            <div className="text-lg">
-              Just the basics - Everything you need to know to set up your
-              database and authentication.
-            </div>
-          </Link>
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/introduction"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">Documentation →</h3>
-            <div className="text-lg">
-              Learn more about Create T3 App, the libraries it uses, and how to
-              deploy it.
-            </div>
-          </Link>
+    <main className="flex min-h-screen flex-col">
+      <header className="bg-background sticky top-0 z-40 w-full border-b backdrop-blur-md">
+        <div className="flex h-16 items-center justify-between px-4 md:px-6">
+          <div className="flex items-center gap-2">
+            <Brain className="text-primary h-6 w-6" />
+            <span className="text-xl font-bold">NoteBud</span>
+          </div>
+          <nav className="hidden items-center gap-6 md:flex">
+            <Link
+              href="#features"
+              className="hover:text-primary underline-offset-4 hover:underline"
+            >
+              Features
+            </Link>
+            <Link
+              href="#how-it-works"
+              className="hover:text-primary underline-offset-4 hover:underline"
+            >
+              How It Works
+            </Link>
+            <Link
+              href="#study-smarter"
+              className="hover:text-primary underline-offset-4 hover:underline"
+            >
+              Study Smarter
+            </Link>
+            <ThemeToggle />
+          </nav>
+          <div className="flex items-center gap-4">
+            {isAuthenticated ? <LandingButtons /> : <SignInWithGoogleButton />}
+          </div>
         </div>
-      </div>
+      </header>
     </main>
   );
 }
