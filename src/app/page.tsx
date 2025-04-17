@@ -15,7 +15,7 @@ export default async function HomePage() {
       {/* Header */}
       <Header isAuthenticated={isAuthenticated} />
       {/* Main */}
-      <main className="flex flex-col pt-8 md:pt-18 lg:pt-20">
+      <main className="flex flex-1 flex-col pt-8 md:pt-18 lg:pt-20">
         {/* Hero Section */}
         <Hero />
         {/* Features Section */}

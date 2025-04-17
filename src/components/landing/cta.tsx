@@ -15,7 +15,7 @@ export function CTA() {
               Ready to Study Smarter?
             </h2>
             <p className="max-w-[600px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Start using NoteBud to improve yout grades and study more
+              Start using NoteBud to improve your grades and study more
               effectively.
             </p>
           </div>
