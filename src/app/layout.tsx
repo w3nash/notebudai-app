@@ -5,7 +5,10 @@ import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 
 export const metadata: Metadata = {
-  title: "NoteBud AI - Your AI-Powered Note-Taking Assistant",
+  title: {
+    template: "%s | NoteBud - Your AI-Powered Note-Taking Assistant",
+    default: "NoteBud - Your AI-Powered Note-Taking Assistant",
+  },
   description:
     "NoteBud AI is a powerful note-taking application that uses advanced AI technology to help you organize, summarize and create mind maps, and manage your notes efficiently.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],

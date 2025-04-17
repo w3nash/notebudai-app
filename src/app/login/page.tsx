@@ -1,7 +1,5 @@
-import { auth } from "@/server/auth";
 import { Header } from "@/components/login/header";
 import { Footer } from "@/components/login/footer";
-import { redirect } from "next/navigation";
 import { authConfig } from "@/server/auth/config";
 import { LogInProviders } from "@/components/login/providers";
 import {
@@ -15,14 +13,11 @@ import {
 import { Logo } from "@/components/logo";
 import { Separator } from "@/components/ui/separator";
 
+export const metadata = {
+  title: "Login",
+};
+
 export default async function LogIn() {
-  const session = await auth();
-  const isAuthenticated = !!session?.user;
-
-  if (isAuthenticated) {
-    redirect("/dashboard");
-  }
-
   // Construct providers from authConfig
   const providers = authConfig.providers.map((provider) => ({
     id: provider.id,
