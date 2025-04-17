@@ -34,6 +34,7 @@ declare module "next-auth" {
 export const authConfig = {
   pages: {
     signIn: "/login",
+    error: "/login",
   },
   providers: [
     /**
@@ -55,14 +56,17 @@ export const authConfig = {
           response_type: "code",
         },
       },
+      allowDangerousEmailAccountLinking: true,
     }),
     DiscordProvider({
       clientId: process.env.AUTH_DISCORD_CLIENT_ID,
       clientSecret: process.env.AUTH_DISCORD_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
     }),
     GitHubProvider({
       clientId: process.env.AUTH_GITHUB_CLIENT_ID,
       clientSecret: process.env.AUTH_GITHUB_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
     }),
   ],
   adapter: PrismaAdapter(db),
