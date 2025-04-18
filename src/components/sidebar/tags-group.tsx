@@ -58,9 +58,9 @@ export function TagsGroup() {
     <SidebarGroup>
       <SidebarGroupLabel>Tags</SidebarGroupLabel>
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger asChild>
           <SidebarGroupAction>
-            <Plus /> <span className="sr-only">Add tag</span>
+            <Plus />
           </SidebarGroupAction>
         </TooltipTrigger>
         <TooltipContent side="right" className="mb-8">

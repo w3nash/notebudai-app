@@ -53,9 +53,9 @@ export function FoldersGroup() {
     <SidebarGroup>
       <SidebarGroupLabel>Folders</SidebarGroupLabel>
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger asChild>
           <SidebarGroupAction>
-            <Plus /> <span className="sr-only">Add folder</span>
+            <Plus />
           </SidebarGroupAction>
         </TooltipTrigger>
         <TooltipContent side="right" className="mb-8">
