@@ -5,7 +5,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
-import { Home, Star, Bot } from "lucide-react";
+import { Home, Star, Bot, NotebookPen } from "lucide-react";
 import Link from "next/link";
 import {
   SidebarGroup,
@@ -33,6 +33,11 @@ const items = [
     title: "Bud AI",
     url: "/chatbud",
     icon: Bot,
+  },
+  {
+    title: "New Note",
+    url: "/note/new",
+    icon: NotebookPen,
   },
 ];
 
