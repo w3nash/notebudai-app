@@ -12,12 +12,21 @@ import {
 } from "@/components/ui/card";
 import { Logo } from "@/components/logo";
 import { Separator } from "@/components/ui/separator";
+import { auth } from "@/server/auth";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Login",
 };
 
-export default async function LogIn() {
+export default async function LogInPage() {
+  const session = await auth();
+  const isAuthenticated = !!session?.user;
+
+  if (isAuthenticated) {
+    redirect("/dashboard");
+  }
+
   // Construct providers from authConfig
   const providers = authConfig.providers.map((provider) => ({
     id: provider.id,
