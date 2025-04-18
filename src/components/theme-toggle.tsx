@@ -42,10 +42,11 @@ export function ThemeToggle() {
       variant={theme === value ? "default" : "ghost"}
       aria-label={label}
       disabled={theme === value}
+      size="icon"
       className="rounded-full disabled:opacity-100"
       onClick={() => setTheme(value)}
     >
-      <Icon className="h-4 w-4" />
+      <Icon className="h-2 w-2" />
     </Button>
   );
 

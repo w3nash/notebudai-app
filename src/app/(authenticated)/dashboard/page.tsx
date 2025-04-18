@@ -3,9 +3,5 @@ export const metadata = {
 };
 
 export default async function DashboardPage() {
-  return (
-    <>
-      <div> Dashboard - works </div>
-    </>
-  );
+  return <div> Dashboard - works </div>;
 }
