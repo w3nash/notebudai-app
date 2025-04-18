@@ -63,9 +63,7 @@ export function TagsGroup() {
             <Plus />
           </SidebarGroupAction>
         </TooltipTrigger>
-        <TooltipContent side="right" className="mb-8">
-          Add tag
-        </TooltipContent>
+        <TooltipContent side="right">Add tag</TooltipContent>
       </Tooltip>
       <SidebarGroupContent>
         <SidebarMenu>
