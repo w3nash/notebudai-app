@@ -22,7 +22,7 @@ export function Features() {
           {features.map((feature, index) => (
             <Card
               key={index}
-              className="bg-card/20 flex h-full flex-col shadow-sm backdrop-blur-lg"
+              className="bg-card/40 flex h-full flex-col shadow-sm backdrop-blur-lg"
             >
               <CardHeader className="flex flex-col items-center space-y-2">
                 <feature.icon className="text-primary h-12 w-12" />

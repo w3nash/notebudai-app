@@ -1,32 +1,27 @@
+import { FolderPageComponent } from "@/components/folder-page";
 import { getQueryClient } from "@/lib/get-query-client";
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { getFolder } from "@/server/folders";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const { id } = params;
+  const folder = await getFolder(id);
   return {
-    title: `${id} folder`,
+    title: folder ? `${folder.name} folder` : "Folder",
   };
 }
 
-export default async function FolderPage({
-  params,
-}: {
+export default async function FolderPage(props: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;
-
-  // Get query client here
+  const params = await props.params;
+  const { id } = params;
   const queryClient = getQueryClient();
 
-  // TODO: Prefetch data here
+  // Prefetch folder data
+  await queryClient.prefetchQuery({
+    queryKey: [id],
+    queryFn: () => getFolder(id),
+  });
 
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <div> {id} - works </div>
-    </HydrationBoundary>
-  );
+  return <FolderPageComponent />;
 }

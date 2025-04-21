@@ -4,6 +4,10 @@ import { redirect } from "next/navigation";
 import { AppHeader } from "@/components/sidebar/app-header";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { getQueryClient } from "@/lib/get-query-client";
+import { getFolders } from "@/server/folders";
+import { getTags } from "@/server/tags";
 
 export default async function AuthenticatedLayout({
   children,
@@ -15,17 +19,34 @@ export default async function AuthenticatedLayout({
     redirect("/login");
   }
 
+  // Get query client here
+  const queryClient = getQueryClient();
+
+  // Prefetch folders here
+  await queryClient.prefetchQuery({
+    queryKey: ["folders"],
+    queryFn: getFolders,
+  });
+
+  // Prefetch tags here
+  await queryClient.prefetchQuery({
+    queryKey: ["tags"],
+    queryFn: getTags,
+  });
+
   return (
-    <SessionProvider>
-      <SidebarProvider>
-        <div className="flex w-full">
-          <AppSidebar />
-          <div className="flex w-full flex-1 flex-col">
-            <AppHeader />
-            <main className="p-4">{children}</main>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <SessionProvider>
+        <SidebarProvider>
+          <div className="flex w-full">
+            <AppSidebar />
+            <div className="flex w-full flex-1 flex-col">
+              <AppHeader />
+              <main className="p-4">{children}</main>
+            </div>
           </div>
-        </div>
-      </SidebarProvider>
-    </SessionProvider>
+        </SidebarProvider>
+      </SessionProvider>
+    </HydrationBoundary>
   );
 }

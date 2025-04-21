@@ -23,7 +23,7 @@ export default async function NotFoundPage() {
       <Header />
       {/* Main */}
       <main className="flex flex-1 flex-col items-center justify-center px-4">
-        <Card className="bg-card/20 w-full backdrop-blur-lg md:w-md">
+        <Card className="bg-card/40 w-full backdrop-blur-lg md:w-md">
           <CardHeader className="flex flex-col items-center justify-center">
             <Logo className="my-4" />
 
@@ -43,7 +43,7 @@ export default async function NotFoundPage() {
 
           <CardContent>
             <Image
-              src="/404.jpg"
+              src="/assets/404.jpg"
               width={750}
               height={600}
               alt="404 Not Found"

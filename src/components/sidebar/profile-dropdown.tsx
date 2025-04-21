@@ -34,7 +34,7 @@ export function ProfileDropdown() {
           <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-card/20 backdrop-blur-lg">
+      <DropdownMenuContent className="bg-card/40 backdrop-blur-lg">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <div className="flex flex-col items-center px-4 py-2">

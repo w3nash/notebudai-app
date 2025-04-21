@@ -1,5 +1,4 @@
 import { getQueryClient } from "@/lib/get-query-client";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export const metadata = {
   title: "Dashboard",
@@ -11,9 +10,5 @@ export default async function DashboardPage() {
 
   // TODO: Prefetch data here
 
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <div> Dashboard - works </div>
-    </HydrationBoundary>
-  );
+  return <div> Dashboard - works </div>;
 }

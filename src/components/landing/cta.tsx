@@ -6,7 +6,7 @@ export function CTA() {
   return (
     <section
       id="study-smarter"
-      className="bg-muted/20 text-card-foreground w-full py-12 backdrop-blur-xl md:py-24 lg:py-32"
+      className="bg-muted/40 text-card-foreground w-full py-12 backdrop-blur-xl md:py-24 lg:py-32"
     >
       <div className="px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">

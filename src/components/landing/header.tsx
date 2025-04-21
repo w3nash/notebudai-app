@@ -6,7 +6,7 @@ import { Logo } from "@/components/logo";
 
 export function Header({ isAuthenticated }: { isAuthenticated: boolean }) {
   return (
-    <header className="bg-background/80 sticky top-0 z-40 w-full border-b backdrop-blur-md">
+    <header className="bg-background/60 sticky top-0 z-40 w-full border-b backdrop-blur-md">
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
         <Logo asLink />
         <nav className="hidden items-center gap-6 md:flex">

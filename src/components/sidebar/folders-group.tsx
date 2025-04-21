@@ -5,56 +5,63 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
-import { Folder, MoreHorizontal, Plus } from "lucide-react";
-import Link from "next/link";
+import { Plus } from "lucide-react";
 import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarGroupContent,
   SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
   useSidebar,
   SidebarGroupAction,
-  SidebarMenuAction,
-  SidebarMenuBadge,
 } from "../ui/sidebar";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import { usePathname } from "next/navigation";
 
-// Mock data for folders group
-const items = [
-  {
-    title: "School",
-    counts: 5,
-    url: "/folder/school",
-  },
-  {
-    title: "Work",
-    counts: 3,
-    url: "/folder/work",
-  },
-  {
-    title: "Personal",
-    counts: 8,
-    url: "/folder/personal",
-  },
-];
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { getFolders, createFolder } from "@/server/folders";
+import { getQueryClient } from "@/lib/get-query-client";
+import { AddFolderSidebarButton } from "./add-folder-button";
+import { FolderList } from "./folder-list";
+import { toast } from "sonner";
 
 export function FoldersGroup() {
   const { state } = useSidebar();
-  const pathname = usePathname();
+  const queryClient = getQueryClient();
+
+  const {
+    data: items,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["folders"],
+    queryFn: getFolders,
+  });
+
+  const createMutation = useMutation({
+    mutationFn: createFolder,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["folders"] });
+    },
+    onError: (error) => {
+      console.error("Error creating folder:", error);
+      toast.error("Failed to create folder.");
+    },
+  });
+
+  const handleCreateFolder = () => {
+    const folderName = prompt("Enter folder name:");
+    if (folderName) {
+      createMutation.mutate({ name: folderName });
+    }
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error :(</div>;
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Folders</SidebarGroupLabel>
       <Tooltip>
         <TooltipTrigger asChild>
-          <SidebarGroupAction>
+          <SidebarGroupAction onClick={handleCreateFolder}>
             <Plus />
           </SidebarGroupAction>
         </TooltipTrigger>
@@ -62,62 +69,12 @@ export function FoldersGroup() {
       </Tooltip>
       <SidebarGroupContent>
         <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              {state === "collapsed" ? (
-                <Tooltip>
-                  <TooltipTrigger>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={pathname.startsWith(item.url)}
-                    >
-                      <Link href={item.url}>
-                        <Folder />
-                        <span>{item.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </TooltipTrigger>
-                  <TooltipContent side="right">{item.title}</TooltipContent>
-                </Tooltip>
-              ) : (
-                <>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname.startsWith(item.url)}
-                  >
-                    <Link href={item.url}>
-                      <Folder />
-                      <span>{item.title}</span>
-                      <SidebarMenuBadge className="bg-primary text-primary-foreground mr-6">
-                        {item.counts}
-                      </SidebarMenuBadge>
-                    </Link>
-                  </SidebarMenuButton>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <SidebarMenuAction
-                        className={
-                          pathname.startsWith(item.url)
-                            ? "text-primary-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                            : ""
-                        }
-                      >
-                        <MoreHorizontal />
-                      </SidebarMenuAction>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent side="right" align="start">
-                      <DropdownMenuItem>
-                        <span>Edit {item.title}</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <span>Delete {item.title}</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </>
-              )}
-            </SidebarMenuItem>
-          ))}
+          <AddFolderSidebarButton
+            length={items?.length}
+            state={state}
+            handleCreateFolder={handleCreateFolder}
+          />
+          <FolderList items={items ?? []} state={state} />
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>

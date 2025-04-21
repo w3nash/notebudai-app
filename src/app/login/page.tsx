@@ -39,7 +39,7 @@ export default async function LogInPage() {
       <Header />
       {/* Main */}
       <main className="flex flex-1 flex-col items-center justify-center px-4">
-        <Card className="bg-card/20 w-full backdrop-blur-lg md:w-md">
+        <Card className="bg-card/40 w-full backdrop-blur-lg md:w-md">
           <CardHeader className="flex flex-col items-center justify-center">
             <Logo className="my-4" />
 
