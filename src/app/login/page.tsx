@@ -24,7 +24,7 @@ export default async function LogInPage() {
   const isAuthenticated = !!session?.user;
 
   if (isAuthenticated) {
-    redirect("/dashboard");
+    redirect("/chatbud");
   }
 
   // Construct providers from authConfig

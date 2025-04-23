@@ -6,7 +6,7 @@ import {
 import { AppLogo } from "@/components/sidebar/app-logo";
 import { MenuGroup } from "./menu-group";
 import { FoldersGroup } from "./folders-group";
-import { TagsGroup } from "./tags-group";
+// import { TagsGroup } from "./tags-group";
 
 export function AppSidebar() {
   return (
@@ -17,7 +17,7 @@ export function AppSidebar() {
       <SidebarContent>
         <MenuGroup />
         <FoldersGroup />
-        <TagsGroup />
+        {/* <TagsGroup /> */}
       </SidebarContent>
     </Sidebar>
   );

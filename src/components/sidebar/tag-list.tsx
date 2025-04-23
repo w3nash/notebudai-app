@@ -1,6 +1,6 @@
 "use client";
 
-import type { Folder as FolderType } from "@prisma/client";
+import type { Tag as TagType } from "@prisma/client";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -12,7 +12,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
-import { Folder, MoreHorizontal } from "lucide-react";
+import { Tag, MoreHorizontal } from "lucide-react";
 import {
   SidebarMenuItem,
   SidebarMenuButton,
@@ -21,51 +21,44 @@ import {
 import { usePathname } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { getQueryClient } from "@/lib/get-query-client";
-import { deleteFolder, updateFolder } from "@/server/folders";
+import { deleteTag, updateTag } from "@/server/tags";
 import Link from "next/link";
 
-export function FolderList({
-  items,
-  state,
-}: {
-  items: FolderType[];
-  state: string;
-}) {
+export function TagList({ items, state }: { items: TagType[]; state: string }) {
   const pathname = usePathname();
   const queryClient = getQueryClient();
 
   const deleteMutation = useMutation({
-    mutationFn: deleteFolder,
+    mutationFn: deleteTag,
     onSuccess: async (_data, tag) => {
-      await queryClient.invalidateQueries({ queryKey: ["folders"] });
+      await queryClient.invalidateQueries({ queryKey: ["tags"] });
       await queryClient.invalidateQueries({ queryKey: [tag.id] });
     },
     onError: (error) => {
-      console.error("Error deleting folder:", error);
+      console.error("Error deleting tag:", error);
     },
   });
 
   const editMutation = useMutation({
-    // updateFolder now takes (id, data)
     mutationFn: ({ id, name }: { id: string; name: string }) =>
-      updateFolder(id, { name }),
-    onSuccess: async (folder) => {
-      await queryClient.invalidateQueries({ queryKey: ["folders"] });
-      await queryClient.invalidateQueries({ queryKey: [folder.id] });
+      updateTag(id, { name }),
+    onSuccess: async (tag) => {
+      await queryClient.invalidateQueries({ queryKey: ["tag"] });
+      await queryClient.invalidateQueries({ queryKey: [tag.id] });
     },
     onError: (error) => {
-      console.error("Error editing folder:", error);
+      console.error("Error editing tag:", error);
     },
   });
 
-  const handleDeleteFolder = (id: string) => {
-    if (window.confirm("Are you sure you want to delete this folder?")) {
+  const handleDeleteTag = (id: string) => {
+    if (window.confirm("Are you sure you want to delete this tag?")) {
       deleteMutation.mutate({ id });
     }
   };
 
-  const handleEditFolder = (id: string, currentName: string) => {
-    const newName = window.prompt("Edit folder name:", currentName);
+  const handleEditTag = (id: string, currentName: string) => {
+    const newName = window.prompt("Edit tag name:", currentName);
     if (newName?.trim() && newName !== currentName) {
       editMutation.mutate({ id, name: newName.trim() });
     }
@@ -74,7 +67,7 @@ export function FolderList({
   return (
     <>
       {items?.map((item) => {
-        const url = `/folder/${item.id}`;
+        const url = `/tag/${item.id}`;
         return (
           <SidebarMenuItem key={item.id}>
             {state === "collapsed" ? (
@@ -85,7 +78,7 @@ export function FolderList({
                     isActive={pathname.startsWith(url)}
                   >
                     <Link href={url}>
-                      <Folder />
+                      <Tag />
                       <span>{item.name}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -96,7 +89,7 @@ export function FolderList({
               <>
                 <SidebarMenuButton asChild isActive={pathname.startsWith(url)}>
                   <Link href={url}>
-                    <Folder />
+                    <Tag />
                     <span>{item.name}</span>
                   </Link>
                 </SidebarMenuButton>
@@ -114,13 +107,11 @@ export function FolderList({
                   </DropdownMenuTrigger>
                   <DropdownMenuContent side="right" align="start">
                     <DropdownMenuItem
-                      onClick={() => handleEditFolder(item.id, item.name)}
+                      onClick={() => handleEditTag(item.id, item.name)}
                     >
                       <span>Edit {item.name}</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => handleDeleteFolder(item.id)}
-                    >
+                    <DropdownMenuItem onClick={() => handleDeleteTag(item.id)}>
                       Delete {item.name}
                     </DropdownMenuItem>
                   </DropdownMenuContent>

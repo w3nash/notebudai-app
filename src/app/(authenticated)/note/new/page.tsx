@@ -1,5 +1,4 @@
-import { getQueryClient } from "@/lib/get-query-client";
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { Tiptap } from "@/components/tiptap-editor";
 
 export async function generateMetadata() {
   return {
@@ -8,14 +7,5 @@ export async function generateMetadata() {
 }
 
 export default async function NewNotePage() {
-  // Get query client here
-  const queryClient = getQueryClient();
-
-  // TODO: Prefetch data here
-
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <div> New Note - works </div>
-    </HydrationBoundary>
-  );
+  return <Tiptap />;
 }

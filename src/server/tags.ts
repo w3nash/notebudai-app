@@ -1,95 +1,28 @@
 "use server";
 
-import { db } from "@/server/db";
-import { getAuthenticatedUser } from "./user";
+// Re-export query functions by directly re-declaring them as server functions
 export async function getTags() {
-  const user = await getAuthenticatedUser();
-
-  try {
-    const tags = await db.tag.findMany({
-      where: { userId: user.id },
-    });
-    return tags;
-  } catch (error) {
-    console.error("Error fetching tags:", error);
-    throw new Error("Failed to fetch tags.");
-  }
+  return (await import("./tags/queries")).getTags();
 }
 
+// Re-export mutation functions by directly re-declaring them as server functions
 export async function createTag(data: { name: string }) {
-  const user = await getAuthenticatedUser();
-
-  try {
-    const tag = await db.tag.create({
-      data: { ...data, userId: user.id },
-    });
-    return tag;
-  } catch (error) {
-    console.error("Error creating tag:", error);
-    throw new Error("Failed to create tag.");
-  }
+  return (await import("./tags/mutations")).createTag(data);
 }
 
 export async function updateTag(id: string, data: { name: string }) {
-  const user = await getAuthenticatedUser();
-
-  try {
-    const tag = await db.tag.update({
-      where: { id, userId: user.id },
-      data,
-    });
-    return tag;
-  } catch (error) {
-    console.error("Error updating tag:", error);
-    throw new Error("Failed to update tag.");
-  }
+  return (await import("./tags/mutations")).updateTag(id, data);
 }
 
 export async function deleteTag(data: { id: string }) {
-  const user = await getAuthenticatedUser();
-
-  try {
-    await db.tag.delete({
-      where: { id: data.id, userId: user.id },
-    });
-  } catch (error) {
-    console.error("Error deleting tag:", error);
-    throw new Error("Failed to delete tag.");
-  }
+  return (await import("./tags/mutations")).deleteTag(data);
 }
 
+// Re-export note-tag relationship functions
 export async function addTagToNote(data: { id: string; tagId: string }) {
-  const user = await getAuthenticatedUser();
-
-  try {
-    await db.note.update({
-      where: { id: data.id, userId: user.id },
-      data: {
-        tags: {
-          connect: { id: data.tagId },
-        },
-      },
-    });
-  } catch (error) {
-    console.error("Error adding tag to note:", error);
-    throw new Error("Failed to add tag to note.");
-  }
+  return (await import("./tags/note-tags")).addTagToNote(data);
 }
 
 export async function removeTagFromNote(data: { id: string; tagId: string }) {
-  const user = await getAuthenticatedUser();
-
-  try {
-    await db.note.update({
-      where: { id: data.id, userId: user.id },
-      data: {
-        tags: {
-          disconnect: { id: data.tagId },
-        },
-      },
-    });
-  } catch (error) {
-    console.error("Error removing tag from note:", error);
-    throw new Error("Failed to remove tag from note.");
-  }
+  return (await import("./tags/note-tags")).removeTagFromNote(data);
 }

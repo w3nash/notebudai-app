@@ -37,8 +37,9 @@ export function FoldersGroup() {
 
   const createMutation = useMutation({
     mutationFn: createFolder,
-    onSuccess: async () => {
+    onSuccess: async (_data) => {
       await queryClient.invalidateQueries({ queryKey: ["folders"] });
+      toast.success("Folder created successfully.");
     },
     onError: (error) => {
       console.error("Error creating folder:", error);

@@ -123,4 +123,129 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .ProseMirror:focus {
+    outline: none;
+  }
+
+  .tiptap p.is-editor-empty:first-child::before {
+    color: #adb5bd;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+  }
+  /* Code and preformatted text styles */
+  .tiptap code {
+    @apply text-card-foreground bg-primary/40 dark:bg-primary relative rounded px-[0.6rem] py-[0.4rem] font-mono text-sm font-semibold;
+  }
+
+  .tiptap p {
+    @apply leading-7 [&:not(:first-child)]:mt-1.5;
+  }
+
+  .tiptap blockquote {
+    @apply mt-6 border-l-2 pl-6 italic;
+  }
+
+  .tiptap ul {
+    @apply my-6 ml-6 list-disc [&>li]:mt-2;
+  }
+
+  .tiptap ol {
+    @apply my-6 ml-6 list-decimal [&>li]:mt-2;
+  }
+
+  .tiptap table {
+    @apply w-full;
+  }
+
+  .tiptap tr {
+    @apply even:bg-muted m-0 border-t p-0;
+  }
+
+  .tiptap th {
+    @apply border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right;
+  }
+
+  .tiptap td {
+    @apply border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right;
+  }
+
+  .tiptap h1 {
+    @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
+  }
+
+  .tiptap h2 {
+    @apply scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0;
+  }
+
+  .tiptap h3 {
+    @apply scroll-m-20 text-2xl font-semibold tracking-tight;
+  }
+
+  .tiptap h4 {
+    @apply scroll-m-20 text-xl font-semibold tracking-tight;
+  }
+
+  .tiptap ul[data-type="taskList"] {
+    margin-left: 0;
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .tiptap ul[data-type="taskList"] li {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .tiptap ul[data-type="taskList"] li > label {
+    margin-right: 0.5rem; /* mr-2 */
+    flex: none;
+    user-select: none;
+  }
+
+  .tiptap ul[data-type="taskList"] li > div {
+    flex: 1 1 0%;
+  }
+
+  .tiptap ul[data-type="taskList"] input[type="checkbox"] {
+    display: inline-block; /* default */
+    vertical-align: middle; /* for alignment */
+    border-color: var(--color-primary, #000); /* border-primary */
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 0.125rem; /* rounded-sm */
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); /* shadow */
+    width: 1rem; /* h-4 w-4 */
+    height: 1rem;
+    min-width: 1rem;
+    min-height: 1rem;
+    flex-shrink: 0;
+    cursor: pointer;
+    outline: none;
+    transition:
+      box-shadow 0.2s,
+      border-color 0.2s;
+    /* focus-visible:ring-1 focus-visible:ring-ring */
+  }
+  .tiptap ul[data-type="taskList"] input[type="checkbox"]:focus-visible {
+    box-shadow: 0 0 0 1px var(--color-ring, #000);
+    outline: none;
+  }
+  .tiptap ul[data-type="taskList"] input[type="checkbox"]:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  /* data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground */
+  .tiptap
+    ul[data-type="taskList"]
+    input[type="checkbox"][data-state="checked"] {
+    background-color: var(--color-primary, #000);
+    color: var(--color-primary-foreground, #fff);
+  }
+
+  .tiptap ul[data-type="taskList"] ul[data-type="taskList"] {
+    margin: 0;
+  }
 }

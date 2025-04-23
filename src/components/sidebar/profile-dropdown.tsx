@@ -46,12 +46,12 @@ export function ProfileDropdown() {
           <span className="text-xs">{user?.email}</span>
         </div>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
+        {/* <DropdownMenuItem asChild>
           <Link href="/settings">
             <Settings />
             <span>Settings</span>
           </Link>
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
         <DropdownMenuItem
           className="hover:cursor-pointer"
           onClick={async () => await signOut()}
