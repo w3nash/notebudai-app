@@ -47,6 +47,7 @@ import { toast } from "sonner";
 import clsx from "clsx";
 import { createNote, updateNote, deleteNote } from "@/server/notes";
 import { useRouter } from "next/navigation";
+import { getQueryClient } from "@/lib/get-query-client";
 
 export function Tiptap({
   note,
@@ -58,6 +59,7 @@ export function Tiptap({
   const [title, setTitle] = useState(note?.title ?? "");
   const [folder, setFolder] = useState(note?.folderId ?? "");
   const [isFavorite, setIsFavorite] = useState(note?.isFavorite ?? false);
+  const queryClient = getQueryClient();
   const router = useRouter();
   const editor = useEditor({
     extensions: [
@@ -126,7 +128,9 @@ export function Tiptap({
 
   const deleteMutation = useMutation({
     mutationFn: deleteNote,
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: [note?.folderId] });
+      await queryClient.invalidateQueries({ queryKey: [note?.id] });
       toast.success("Note deleted successfully!");
       router.push("/dashboard");
     },
